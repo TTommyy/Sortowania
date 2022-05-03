@@ -161,6 +161,57 @@ class MergeSort implements Sort{
     }
 }
 
+//Sortowanie szybkie 03.05.2022AD
+/*
+Analiza złożoności:
+ Pesymistycznie mamy:
+ T(n) = T(n-1) + |O|(n) = n * |O|(n) = |O|(n^2).
+ Optymalnie pattriton dzieli na połowy więc:
+ T(n) = 2T(n/2) + |O|(n)
+ Stosując twierdzenie o rekurencji uniwersalnej:
+ a = 2, b = 2, n^(log a z b) = n^(log 2 z 2) = n^1.
+ Zatem f(n) = |O|(n) = |O|(n ^ (log a z b)), więc:
+ T(n) = |O|(n * lg n)
+*/
+class QuickSort implements Sort{
+
+
+    //Dzielenie werjsa z "Wprowadzenia do algorytmów"
+    /*
+     t - tablica
+     p - początkowy indeks
+     r - koniowy indeks
+     q - graniczny indeks 
+     */
+    private int pattriton(int[] t, int p, int r){
+        int pivot = t[r],i = p-1, j = p,temp;
+
+        while(j<p){
+            if(t[j] > pivot){
+                i++;
+                temp = t[j];
+                t[j] = t[i];
+                t[i] = temp;
+            }
+            j++;
+        }
+        t[r] = t[i+1];
+        t[i+1] = pivot;
+        return (i+1);
+    }
+
+
+    private void quickSort(int[] t, int p, int r){
+        int q = pattriton(t, p, r);
+        quickSort(t, p, q);
+        quickSort(t, q+1, r);
+    }
+
+    public void sort(int t[]){
+        quickSort(t, 0, t.length);
+    }
+}
+
 
 //Program
 class SortApp{
@@ -175,6 +226,7 @@ class SortApp{
         int[] t2 = {6,4,3,7,8,9,15,11,2,1,5};
         int[] t3 = {6,4,3,7,8,9,15,11,2,1,5};
         int[] t4 = {6,4,3,7,8,9,15,11,2,1,5};
+        int[] t5 = {6,4,3,7,8,9,15,11,2,1,5};
         /////////////////////////////////////
 
         Sort s1 = new BubbleSort();
@@ -200,6 +252,10 @@ class SortApp{
         display(t4);
 
         //////////////////////////////////////
+
+        Sort s5 = new QuickSort();
+        s5.sort(t5);
+        display(t5);
 
     }
 }
